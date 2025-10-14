@@ -14,4 +14,11 @@
       <Property ID="Role[1]" Value="Administrators" />
     </Group>
   </Element>
+  <Element ID="JohnDoe" Type="User">
+    <Property ID="UserID" Value="3" />
+    <Property ID="Password" Value="Gb5ieE5QfuZhS7xhP47n/KE3QznD88cglRRskxed1Rsetk5DV8o=" />
+    <Group ID="Roles">
+      <Property ID="Role[1]" Value="Administrators" />
+    </Group>
+  </Element>
 </Configuration>
