@@ -10,13 +10,20 @@ TYPE
 		spawnCase : BOOL;
 		pusher : IO_Pusher_typ;
 	END_STRUCT;
+	StateEnum : 
+		(
+		ST_SINGOUT,
+		ST_SINGIN,
+		ST_IDLE,
+		ST_HOLD
+		);
 	IO_Conveyor_typ : 	STRUCT 
 		diPhotoeyeEntrance : BOOL;
 		diPhotoeyeExit : BOOL;
 		doRunForward : BOOL;
 		doRunReverse : BOOL;
-		_diPhotoeyeExit : BOOL;
-		_diPhotoeyeEntrance : BOOL;
+		_diPhotoeye2 : BOOL;
+		_diPhotoeye1 : BOOL;
 		singoutTimer : TON;
 		singinTimer : TON;
 		state : StateEnum;
@@ -26,6 +33,7 @@ TYPE
 		upstreamReadyToSend : BOOL;
 		readyToReceive : BOOL;
 		readyToSend : BOOL;
+		runMotor : BOOL;
 		aoRunSpeed : REAL;
 	END_STRUCT;
 END_TYPE
