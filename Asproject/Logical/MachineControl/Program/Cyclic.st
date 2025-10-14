@@ -26,6 +26,8 @@ PROGRAM _CYCLIC
     
 	io.conveyor[i].singinTimer();
 	io.conveyor[i].singoutTimer();
+	spawnTimer();
+	spawnTimer.PT:= T#6s;
 	io.conveyor[i].singinTimer.PT := T#5s;
 	io.conveyor[i].singoutTimer.PT := T#400ms;
 
@@ -36,11 +38,12 @@ PROGRAM _CYCLIC
 			
 	    // Regular mode - Day 1
 
-			IF spawnTimer.Q THEN
+			IF spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance THEN
 				io.spawnCase := TRUE;
 				spawnTimer.IN := FALSE;
 			ELSE
-				spawnTimer.IN := FALSE;
+				io.spawnCase := FALSE;
+				spawnTimer.IN := TRUE;
 			END_IF	
 			// Handshakes
 			
