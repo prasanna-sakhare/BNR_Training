@@ -1,5 +1,10 @@
 
 TYPE
+	CountEnum : 
+		(
+		ST_RUNNING,
+		ST_WAIT
+		);
 	StateEnum : 
 		(
 		ST_SINGOUT,

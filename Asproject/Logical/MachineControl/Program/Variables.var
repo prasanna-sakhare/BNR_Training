@@ -1,4 +1,5 @@
 VAR
+	counterState : CountEnum;
 	counter : INT;
 	diPhotoeye : BOOL;
 	doPusher : BOOL;
@@ -8,4 +9,5 @@ VAR
 	test : INT;
 	currentTimer : TIME;
 	currentTimer1 : TIME;
+	St_IDLE : BOOL;
 END_VAR

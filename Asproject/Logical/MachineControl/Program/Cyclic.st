@@ -10,19 +10,26 @@ PROGRAM _CYCLIC
 	testTimer.IN := TRUE;
 	testTimer.PT := T#1S;
 	
+	CASE counterState OF
+		ST_WAIT:
+		     IF testTimer.Q THEN 
+					counterState := ST_RUNNING;
+			END_IF
+			
+	    ST_RUNNING:
+			    counter := counter + 1;
+				testTimer.IN := FALSE;
+			    counterState := ST_WAIT;
+	END_CASE
+    //test :=  counter MOD 10;
+	//myCommand := (test = 0) AND (counter<200) ;
 	
-	IF testTimer.Q THEN
-		counter := counter + 1;
-		testTimer.IN := FALSE;
-	END_IF
-	
-    test :=  counter MOD 10;
-	myCommand := (test = 0) AND (counter<200) ;
 	
 	
 	
-	currentTimer := T#50S;
 	
+	
+
 	
 	
 	
