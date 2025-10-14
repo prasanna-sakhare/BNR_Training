@@ -34,6 +34,7 @@ PROGRAM _CYCLIC
 	
 	
 	FOR i := 0 TO MAI_CONVEYORS DO 
+		
 		convPhotoeyePrev[i].singinTimer();
 		convPhotoeyePrev[i].singoutTimer();
 		convPhotoeyePrev[i].singinTimer.PT := T#5s;
@@ -69,9 +70,10 @@ PROGRAM _CYCLIC
 				END_IF 
 				
 			ST_SINGOUT:
+				
 				io.conveyor[i].doRunForward := TRUE;
 				convPhotoeyePrev[i].singoutTimer.IN := TRUE;
-				
+				// This is to test remote branch work
 				
 			IF i = MAI_CONVEYORS AND io.conveyor[i].diPhotoeyeExit THEN
 				convPhotoeyePrev[i].state := ST_HOLD;
