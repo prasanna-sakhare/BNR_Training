@@ -1,0 +1,11 @@
+VAR
+	counter : INT;
+	diPhotoeye : BOOL;
+	doPusher : BOOL;
+	myCommand : BOOL;
+	convPhotoeyePrev : ARRAY[0..MAI_CONVEYORS] OF edge_Detection_Typ;
+	testTimer : TON;
+	test : INT;
+	currentTimer : TIME;
+	currentTimer1 : TIME;
+END_VAR
