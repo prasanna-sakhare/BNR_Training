@@ -15,6 +15,17 @@ TYPE
 		diPhotoeyeExit : BOOL;
 		doRunForward : BOOL;
 		doRunReverse : BOOL;
+		_diPhotoeyeExit : BOOL;
+		_diPhotoeyeEntrance : BOOL;
+		singoutTimer : TON;
+		singinTimer : TON;
+		state : StateEnum;
+		diPhotoeye2 : BOOL;
+		diPhotoeye1 : BOOL;
+		downstreamReadyToReceive : BOOL;
+		upstreamReadyToSend : BOOL;
+		readyToReceive : BOOL;
+		readyToSend : BOOL;
 		aoRunSpeed : REAL;
 	END_STRUCT;
 END_TYPE

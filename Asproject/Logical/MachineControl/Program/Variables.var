@@ -7,8 +7,7 @@ VAR
 	convPhotoeyePrev : ARRAY[0..MAI_CONVEYORS] OF edge_Detection_Typ;
 	testTimer : TON;
 	test : INT;
-	currentTimer : TIME;
-	currentTimer1 : TIME;
-	St_IDLE : BOOL;
+	spawnTimer : TON;
+	direction : BOOL;
 	mode : INT;
 END_VAR
