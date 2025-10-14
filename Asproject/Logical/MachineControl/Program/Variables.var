@@ -10,4 +10,5 @@ VAR
 	currentTimer : TIME;
 	currentTimer1 : TIME;
 	St_IDLE : BOOL;
+	mode : INT;
 END_VAR
