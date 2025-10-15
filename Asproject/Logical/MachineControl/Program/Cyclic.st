@@ -7,8 +7,6 @@ PROGRAM _CYCLIC
 //	END_IF	
 	
 //	testTimer();
-//	testTimer.IN := TRUE;
-//	testTimer.PT := T#1S;
 
 //  Below peice of logic was added to test case statement testing during day 1.
 //	
@@ -29,9 +27,9 @@ PROGRAM _CYCLIC
 	
 // Start of Conveyor logic
 	
+	io.conveyor[i].singinTimer.PT := T#6s;
 
 
-	mode := 1;
 	
 	CASE mode OF 
 		1:
@@ -56,14 +54,6 @@ PROGRAM _CYCLIC
 					io.conveyor[i].doRunReverse := FALSE;
 			
 				
-				//  Timers used for each zone.
-				io.conveyor[i].singinTimer();
-				io.conveyor[i].singoutTimer();
-				io.conveyor[i].singinTimer.PT := T#5s;
-				io.conveyor[i].singoutTimer.PT := T#400ms;
-				
-				
-				// Zone handshake flags logic
 				IF io.conveyor[i].diPhotoeye2 THEN
 					io.conveyor[i].readyToSend := TRUE;
 				ELSE 
@@ -78,7 +68,6 @@ PROGRAM _CYCLIC
 				
 				
 				
-				// handshakes for one direction
 				
 				
 					IF i = 0 THEN
@@ -93,7 +82,6 @@ PROGRAM _CYCLIC
 						io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
 					END_IF
 				
-				// Case staement for zone states
 				CASE io.conveyor[i].state OF 		
 					ST_IDLE:
 						io.conveyor[i].runMotor := FALSE;
@@ -110,7 +98,6 @@ PROGRAM _CYCLIC
 				
 				
 						IF io.conveyor[i].diPhotoeye2 THEN
-							convPhotoeyePrev[i].singinTimer.IN := FALSE;
 							io.conveyor[i].runMotor := FALSE;
 							IF io.conveyor[i].downstreamReadyToReceive THEN
 								io.conveyor[i].state := ST_SINGOUT;
@@ -161,12 +148,10 @@ PROGRAM _CYCLIC
 			IF io.conveyor[3].diPhotoeyeExit THEN
 				direction := FALSE;
 	     	END_IF	
-			
 			// Handshakes
 			
 			FOR i := 0 TO MAI_CONVEYORS DO 
 				
-				// chnaging zone controls IO when direction is changed
 				
 				IF direction THEN
 					io.conveyor[i].diPhotoeye1 := io.conveyor[i].diPhotoeyeEntrance;
@@ -182,7 +167,6 @@ PROGRAM _CYCLIC
 				
 				
 			
-				// logic to set flags for zone 
 				
 				IF io.conveyor[i].diPhotoeye2 THEN
 					io.conveyor[i].readyToSend := TRUE;
@@ -198,7 +182,6 @@ PROGRAM _CYCLIC
 				
 				
 				
-				// handshakes between zones for both directions
 				
 				IF direction THEN
 						IF i = 0 THEN
@@ -226,7 +209,6 @@ PROGRAM _CYCLIC
 					END_IF 
 				END_IF
 				
-				// Case statement for zone states
 				CASE io.conveyor[i].state OF 		
 					ST_IDLE:
 						io.conveyor[i].runMotor := FALSE;
@@ -243,7 +225,6 @@ PROGRAM _CYCLIC
 				
 				
 						IF io.conveyor[i].diPhotoeye2 THEN
-							convPhotoeyePrev[i].singinTimer.IN := FALSE;
 							io.conveyor[i].runMotor := FALSE;
 							IF io.conveyor[i].downstreamReadyToReceive THEN
 								io.conveyor[i].state := ST_SINGOUT;
@@ -288,6 +269,7 @@ PROGRAM _CYCLIC
 			
 		3:  
 		
+			END_FOR
 	END_CASE
 	
 	
