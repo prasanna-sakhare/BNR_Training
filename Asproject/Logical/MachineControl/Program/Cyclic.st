@@ -31,7 +31,9 @@ PROGRAM _CYCLIC
 	io.conveyor[i].singinTimer.PT := T#6s;
 	io.conveyor[i].singoutTimer.PT := T#400ms;
 
+
    mode := 3;
+
 	
 	CASE mode OF 
 		1:
