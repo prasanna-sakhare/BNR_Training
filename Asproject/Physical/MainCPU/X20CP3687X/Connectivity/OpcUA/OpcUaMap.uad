@@ -21,9 +21,6 @@
       <GlobalVariables Name="Global Variables">
         <Variable Name="io" RecursiveEnable="2" />
       </GlobalVariables>
-      <Task Name="Program">
-        <Variable Name="counter" />
-      </Task>
     </Module>
   </DefaultView>
 </OpcUaSource>

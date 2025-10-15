@@ -8,5 +8,6 @@
     <Object Type="File">IO.var</Object>
     <Object Type="Package" Description="Global libraries">Libraries</Object>
     <Object Type="Package">MachineControl</Object>
+    <Object Type="Package">Tracking</Object>
   </Objects>
 </Package>
