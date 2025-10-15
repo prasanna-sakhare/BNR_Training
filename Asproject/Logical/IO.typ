@@ -34,6 +34,7 @@ TYPE
 		readyToReceive : BOOL;
 		readyToSend : BOOL;
 		runMotor : BOOL;
+		singinHoldTimer : TON;
 		aoRunSpeed : REAL;
 	END_STRUCT;
 END_TYPE
