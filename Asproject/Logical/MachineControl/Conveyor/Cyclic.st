@@ -19,7 +19,7 @@ PROGRAM _CYCLIC
 	axisHandler();
 	IF mode = 4 THEN 
 		CASE io.pusher.state OF
-		ST_INIT:
+		 ST_INIT:
 			IF axisHandler.Active AND NOT axisHandler.PowerOn THEN
 				axisHandler.Power := TRUE;
 			ELSIF axisHandler.PowerOn AND NOT axisHandler.Home THEN
@@ -56,7 +56,7 @@ PROGRAM _CYCLIC
 				io.pusher.state := ST_PULL;
 			END_IF
 	
-		ST_PULL:
+	   	ST_PULL:
 			
 				axisHandler.Home:= TRUE;	
 			IF axisHandler.IsHomed THEN
@@ -64,8 +64,8 @@ PROGRAM _CYCLIC
 				io.pusher.state := ST_WAIT;
 			END_IF
 			
-	END_CASE		
-	END_IF
+	    END_CASE		
+    END_IF
 	
 	mode := 4;
 
@@ -83,7 +83,7 @@ PROGRAM _CYCLIC
 				io.conveyor[i].singinTimer();
 				io.conveyor[i].singoutTimer();
 				io.conveyor[i].singinTimer.PT := T#6s;
-				io.conveyor[i].singoutTimer.PT := T#700ms;
+				io.conveyor[i].singoutTimer.PT := T#900ms;
 				
 		IF mode = 2 THEN
 			IF io.conveyor[0].diPhotoeyeEntrance THEN	
