@@ -7,29 +7,29 @@ PROGRAM _CYCLIC
 //	END_IF	
 	
 //	testTimer();
-	testTimer.IN := TRUE;
-	testTimer.PT := T#1S;
-	
-	CASE counterState OF
-		ST_WAIT:
-		     IF testTimer.Q THEN 
-					counterState := ST_RUNNING;
-			END_IF
-			
-	    ST_RUNNING:
-			    counter := counter + 1;
-				testTimer.IN := FALSE;
-			    counterState := ST_WAIT;
-	END_CASE
-    //test :=  counter MOD 10;
+//	testTimer.IN := TRUE;
+//	testTimer.PT := T#1S;
+
+//  Below peice of logic was added to test case statement testing during day 1.
+//	
+//	CASE counterState OF
+//		ST_WAIT:
+//		     IF testTimer.Q THEN 
+//					counterState := ST_RUNNING;
+//			END_IF
+//			
+//	    ST_RUNNING:
+//			    counter := counter + 1;
+//				testTimer.IN := FALSE;
+//			    counterState := ST_WAIT;
+//	END_CASE
+//    //test :=  counter MOD 10;
 	//myCommand := (test = 0) AND (counter<200)
-    
-	io.conveyor[i].singinTimer();
-	io.conveyor[i].singoutTimer();
-	spawnTimer();
-	spawnTimer.PT:= T#6s;
-	io.conveyor[i].singinTimer.PT := T#5s;
-	io.conveyor[i].singoutTimer.PT := T#400ms;
+  
+	
+// Start of Conveyor logic
+	
+
 
 	mode := 1;
 	
@@ -56,6 +56,14 @@ PROGRAM _CYCLIC
 					io.conveyor[i].doRunReverse := FALSE;
 			
 				
+				//  Timers used for each zone.
+				io.conveyor[i].singinTimer();
+				io.conveyor[i].singoutTimer();
+				io.conveyor[i].singinTimer.PT := T#5s;
+				io.conveyor[i].singoutTimer.PT := T#400ms;
+				
+				
+				// Zone handshake flags logic
 				IF io.conveyor[i].diPhotoeye2 THEN
 					io.conveyor[i].readyToSend := TRUE;
 				ELSE 
@@ -70,7 +78,7 @@ PROGRAM _CYCLIC
 				
 				
 				
-				// handshakes for both directions
+				// handshakes for one direction
 				
 				
 					IF i = 0 THEN
@@ -85,7 +93,7 @@ PROGRAM _CYCLIC
 						io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
 					END_IF
 				
-				
+				// Case staement for zone states
 				CASE io.conveyor[i].state OF 		
 					ST_IDLE:
 						io.conveyor[i].runMotor := FALSE;
@@ -144,7 +152,6 @@ PROGRAM _CYCLIC
 			
 			// toggle between forward reverse
 		   
-			//io.spawnCase := TRUE;
 			// Logic to change box direction when it hits last zone on each side
 				
 			IF io.conveyor[0].diPhotoeyeEntrance THEN
@@ -154,11 +161,12 @@ PROGRAM _CYCLIC
 			IF io.conveyor[3].diPhotoeyeExit THEN
 				direction := FALSE;
 	     	END_IF	
+			
 			// Handshakes
 			
 			FOR i := 0 TO MAI_CONVEYORS DO 
 				
-				// direction definition for box
+				// chnaging zone controls IO when direction is changed
 				
 				IF direction THEN
 					io.conveyor[i].diPhotoeye1 := io.conveyor[i].diPhotoeyeEntrance;
@@ -174,7 +182,7 @@ PROGRAM _CYCLIC
 				
 				
 			
-				// 
+				// logic to set flags for zone 
 				
 				IF io.conveyor[i].diPhotoeye2 THEN
 					io.conveyor[i].readyToSend := TRUE;
@@ -190,7 +198,7 @@ PROGRAM _CYCLIC
 				
 				
 				
-				// handshakes for both directions
+				// handshakes between zones for both directions
 				
 				IF direction THEN
 						IF i = 0 THEN
@@ -218,7 +226,7 @@ PROGRAM _CYCLIC
 					END_IF 
 				END_IF
 				
-				
+				// Case statement for zone states
 				CASE io.conveyor[i].state OF 		
 					ST_IDLE:
 						io.conveyor[i].runMotor := FALSE;
