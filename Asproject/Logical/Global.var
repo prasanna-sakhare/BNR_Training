@@ -1,3 +1,4 @@
 VAR
+	mode : USINT;
 	gMachine : Piper_typ;
 END_VAR

@@ -9,6 +9,7 @@ PROGRAM _CYCLIC
 		
 	
 	CASE state OF 
+	
 		ST_STOP:
 			counter := 0;
 			IF startCounting THEN
@@ -25,65 +26,23 @@ PROGRAM _CYCLIC
 		     
 	END_CASE
 	
-	axisHandler.MpLink := ADR(gAxis_1);
-	axisHandler.Parameters :=  ADR(axisParameters);
-	axisHandler.Enable := TRUE;
-	io.pusher.aoActualPosition := 100*LREAL_TO_REAL(axisHandler.Position);
-	
-	// If mode 4 is selected run pusher logic
-	IF mode = 4 THEN 
-		CASE io.pusher.state OF
-		 ST_INIT:
-			IF axisHandler.Active AND NOT axisHandler.PowerOn THEN
-				axisHandler.Power := TRUE;
-			ELSIF axisHandler.PowerOn AND NOT axisHandler.Home THEN
-				axisHandler.Home:= TRUE;
-			ELSIF axisHandler.IsHomed THEN
-				io.pusher.state := ST_WAIT;
-			END_IF
-	
-		ST_WAIT:
-			axisHandler.Home:= FALSE;
-			IF io.conveyor[2].diPhotoeye1 AND io.conveyor[2].doRunForward THEN
-				boxLengthTimer.IN := TRUE;
-				IF boxLengthTimer.ET > T#600ms THEN
-					io.pusher.state := ST_PUSH;
-				END_IF
-			ELSE 
-				boxLengthTimer.IN := FALSE;
-			END_IF
-			
-		ST_PUSH :
-			axisParameters.Position := 5.0;
-			axisParameters.Velocity := 5.0;
-			axisParameters.Acceleration := 25.0;
-			axisParameters.Deceleration := 25.0;
-			axisHandler.MoveAbsolute := TRUE;
-			io.pusher.extendedTimer.IN := TRUE;
-			boxLengthTimer.IN := FALSE;
-			
-			IF axisHandler.Position = axisParameters.Position OR io.pusher.extendedTimer.Q THEN
-				axisHandler.MoveAbsolute := FALSE;
-				io.pusher.extendedTimer.IN := FALSE;
-				io.pusher.state := ST_PULL;
-			END_IF
-	
-	   	ST_PULL:
-			
-				axisHandler.Home:= TRUE;	
-			IF axisHandler.IsHomed THEN
-				axisHandler.Home:= TRUE;
-				io.pusher.state := ST_WAIT;
-			END_IF
-			
-	    END_CASE		
-    END_IF
 	
 	// Set mode for operation
 	mode := 4;
-
 	
-	IF spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
+	IF machineStart THEN
+		io.conveyor[0].state := ST_IDLE;
+		io.conveyor[1].state := ST_IDLE;
+		io.conveyor[2].state := ST_IDLE;
+		io.conveyor[3].state := ST_IDLE;
+	ELSIF machineStop THEN
+		io.conveyor[0].state := ST_BOOTING;
+		io.conveyor[1].state := ST_BOOTING;
+		io.conveyor[2].state := ST_BOOTING;
+		io.conveyor[3].state := ST_BOOTING;
+	END_IF	
+	  
+	IF machineRunning AND (spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance) AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
 		io.spawnCase := TRUE;
 		spawnTimer.IN := FALSE;
 	ELSE
@@ -170,8 +129,14 @@ PROGRAM _CYCLIC
 			io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
 		END_IF
 				
-				
+		
 		CASE io.conveyor[i].state OF 		
+			ST_BOOTING:
+				// DO NOTHING
+				io.conveyor[i].runMotor := FALSE;
+				io.conveyor[i].singoutTimer.IN := FALSE;
+				io.conveyor[i].singinTimer.IN := FALSE;
+				
 			ST_IDLE:
 				io.conveyor[i].runMotor := FALSE;
 				io.conveyor[i].singoutTimer.IN := FALSE;
@@ -240,11 +205,10 @@ PROGRAM _CYCLIC
 		
 
 	
-	// Multiple timers and axis function calls
-	axisHandler();	
-	io.pusher.extendedTimer(PT := T#3s);
+	// Multiple timers and axis function calls	
+	
 	spawnTimer(PT:= T#8s);
-	boxLengthTimer(PT := T#1S);
+
 	
 	
 END_PROGRAM

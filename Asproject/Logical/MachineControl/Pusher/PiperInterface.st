@@ -2,7 +2,7 @@
 ACTION PiperInterface: 
 
 	//Give this module a name so it is easier to debug
-	ModuleInterface.ModuleName:=	'Conveyor';
+	ModuleInterface.ModuleName:=	'Pusher';
 
 	//Add a module to the Piper
 	Module.ModuleInterface:=	ADR(ModuleInterface);
@@ -12,34 +12,39 @@ ACTION PiperInterface:
 	// Handle any machine states that this module needs to respond to
 	CASE ModuleInterface.PiperState OF
 		//		MACH_ST_BOOTING:		
-		  //MACH_ST_CLEARING:
-		
+		//      MACH_ST_CLEARING:
 		MACH_ST_STOPPED:
 			machineStop := FALSE;
-			
+			ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
 		MACH_ST_STARTING:
 			machineStart := TRUE;
-			ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
-		//MACH_ST_IDLE:		
-		//		MACH_ST_SUSPENDED:
+			IF axisHandler.IsHomed THEN
+				ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
+			END_IF	
+			
+			// MACH_ST_IDLE:
+			//		MACH_ST_SUSPENDED:
 		MACH_ST_EXECUTE:
 			machineStart := FALSE;
-			machineRunning := TRUE;
-				
+		
+		
 		MACH_ST_STOPPING:
 			machineStop := TRUE;
-			machineRunning := FALSE;
-			ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
+			IF axisHandler.IsHomed THEN
+				ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
+			END_IF	
 		//		MACH_ST_ABORTING:
-		//MACH_ST_ABORTED:
-			//		MACH_ST_HOLDING:
+		//      MACH_ST_ABORTED:
+		
+		//		MACH_ST_HOLDING:
 		//		MACH_ST_HELD:
 		//		MACH_ST_UNHOLDING:
 		//		MACH_ST_SUSPENDING:
 		//		MACH_ST_UNSUSPENDING: 
-		//MACH_ST_RESETTING:
-			
-		//		MACH_ST_COMPLETING:
+		MACH_ST_RESETTING:
+			io.pusher.reset := TRUE;
+			ModuleInterface.ModuleResponse:=	ModuleInterface.PiperState;
+			//		MACH_ST_COMPLETING:
 		//		MACH_ST_COMPLETE:
 		
 		MACH_ST_BYPASSED:
