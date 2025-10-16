@@ -2,7 +2,7 @@
 <?AutomationStudio FileVersion="4.9"?>
 <BR.AS.HardwareTopology>
   <TimeStamps>
-    <TimeStamp LogicalPath="MainCPU.Hardware.hw" LastWriteTime="10/14/2025 16:11:48" />
+    <TimeStamp LogicalPath="MainCPU.Hardware.hw" LastWriteTime="10/15/2025 11:29:56" />
   </TimeStamps>
   <Modules>
     <Module Name="X20CP3687X" Type="X20CP3687X" X="470" Y="274" />
@@ -18,7 +18,32 @@
     <Module Name="X20BM11c" Type="X20BM11" X="709" Y="274" />
     <Module Name="X20DO9322" Type="X20DO9322" X="709" Y="274" />
     <Module Name="X20TB12c" Type="X20TB12" X="709" Y="301" />
+    <Module Name="8V1010.00-2" Type="8V1010.00-2" X="722" Y="423" />
+    <Module Name="8AC123.60-1" Type="8AC123.60-1" X="747.2" Y="538.5" />
+    <Module Name="8AC125.60-2" Type="8AC125.60-2" X="736" Y="538.5" />
+    <Module Name="8AC114.60-2" Type="8AC114.60-2" X="724.8" Y="538.5" />
+    <Module Name="8JSA24.E8080D000-0" Type="8JSA24.E8080D000-0" X="722" Y="652" />
   </Modules>
-  <Links />
+  <Links>
+    <Link From="8AC114.60-2" To="X20CP3687X" FromPort="PLK1" ToPort="IF3" IsRoutedByUser="False">
+      <Point X="730.899963" Y="566.3" />
+      <Point X="730.899963" Y="566.3" />
+      <Point X="721.899963" Y="566.3" />
+      <Point X="526" Y="566.3" />
+      <Point X="526" Y="374" />
+      <Point X="526" Y="361" />
+      <Point X="526" Y="361" />
+    </Link>
+    <Link From="8JSA24.E8080D000-0" To="8V1010.00-2" FromPort="MT" ToPort="MT1" IsRoutedByUser="False">
+      <Point X="753.3" Y="598.5" />
+      <Point X="753.3" Y="598.5" />
+      <Point X="753.3" Y="603.5" />
+      <Point X="753.3" Y="615" />
+      <Point X="771.5" Y="615" />
+      <Point X="771.5" Y="652" />
+      <Point X="771.5" Y="659" />
+      <Point X="771.5" Y="659" />
+    </Link>
+  </Links>
   <InfoElements />
 </BR.AS.HardwareTopology>

@@ -3,6 +3,8 @@ TYPE
 	IO_Pusher_typ : 	STRUCT 
 		aoActualPosition : REAL;
 		diPusherExtended : BOOL;
+		extendedTimer : TON;
+		state : PusherState;
 		diPusherRetracted : BOOL;
 	END_STRUCT;
 	IO_typ : 	STRUCT 
@@ -16,6 +18,13 @@ TYPE
 		ST_SINGIN,
 		ST_IDLE,
 		ST_HOLD
+		);
+	PusherState : 
+		(
+		ST_INIT,
+		ST_WAIT,
+		ST_PUSH,
+		ST_PULL
 		);
 	IO_Conveyor_typ : 	STRUCT 
 		diPhotoeyeEntrance : BOOL;
