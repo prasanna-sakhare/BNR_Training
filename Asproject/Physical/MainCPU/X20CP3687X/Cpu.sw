@@ -50,8 +50,19 @@
     <LibraryObject Name="McAcpAx" Source="Libraries.McAcpAx.lby" Memory="UserROM" Language="binary" Debugging="true" />
     <LibraryObject Name="McAxis" Source="Libraries.McAxis.lby" Memory="UserROM" Language="binary" Debugging="true" />
     <LibraryObject Name="MpAxis" Source="Libraries.MpAxis.lby" Memory="UserROM" Language="binary" Debugging="true" />
+    <LibraryObject Name="csvfilelib" Source="Libraries.csvfilelib.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="fiowrap" Source="Libraries.fiowrap.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="hmitools" Source="Libraries.hmitools.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="logthat" Source="Libraries.logthat.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="piper" Source="Libraries.piper.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="ringbuflib" Source="Libraries.ringbuflib.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="stringext" Source="Libraries.stringext.lby" Memory="UserROM" Language="Binary" Debugging="true" />
+    <LibraryObject Name="FileIO" Source="Libraries.FileIO.lby" Memory="UserROM" Language="binary" Debugging="true" />
+    <LibraryObject Name="AsBrStr" Source="Libraries.AsBrStr.lby" Memory="UserROM" Language="binary" Debugging="true" />
+    <LibraryObject Name="AsArLog" Source="Libraries.AsArLog.lby" Memory="UserROM" Language="binary" Debugging="true" />
+    <LibraryObject Name="AsBrWStr" Source="Libraries.AsBrWStr.lby" Memory="UserROM" Language="binary" Debugging="true" />
+    <LibraryObject Name="ArEventLog" Source="Libraries.ArEventLog.lby" Memory="UserROM" Language="binary" Debugging="true" />
     <LibraryObject Name="powerlnk" Source="" Memory="UserROM" Language="Binary" Debugging="true" />
-    <LibraryObject Name="fileio" Source="" Memory="UserROM" Language="Binary" Debugging="true" />
     <LibraryObject Name="asepl" Source="" Memory="UserROM" Language="Binary" Debugging="true" />
   </Libraries>
 </SwConfiguration>
