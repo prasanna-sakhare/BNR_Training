@@ -1,11 +1,6 @@
 VAR
 	counter : INT;
-	diPhotoeye : BOOL;
-	doPusher : BOOL;
-	myCommand : BOOL;
-	convPhotoeyePrev : ARRAY[0..MAI_CONVEYORS] OF edge_Detection_Typ;
 	boxLengthTimer : TON;
-	test : INT;
 	spawnTimer : TON;
 	direction : BOOL;
 	axisParameters : MpAxisBasicParType;

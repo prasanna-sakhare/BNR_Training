@@ -12,6 +12,8 @@ PROGRAM _CYCLIC
 	//test :=  counter MOD 10;
 	//myCommand := (test = 0) AND (counter<200)
 	
+	PiperInterface;
+	
 	axisHandler.MpLink := ADR(gAxis_1);
 	axisHandler.Parameters :=  ADR(axisParameters);
 	axisHandler.Enable := TRUE;
@@ -40,8 +42,6 @@ PROGRAM _CYCLIC
 			ELSE 
 				boxLengthTimer.IN := FALSE;
 			END_IF
-			
-			
 			
 		ST_PUSH :
 			axisParameters.Position := 5.0;
@@ -87,7 +87,7 @@ PROGRAM _CYCLIC
 		io.conveyor[i].singinTimer();
 		io.conveyor[i].singoutTimer();
 		io.conveyor[i].singinTimer.PT := T#6s;
-		io.conveyor[i].singoutTimer.PT := T#900ms;
+		io.conveyor[i].singoutTimer.PT := T#1200ms;
 				
 		IF mode = 2 THEN
 			IF io.conveyor[0].diPhotoeyeEntrance THEN	
