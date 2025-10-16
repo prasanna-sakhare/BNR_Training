@@ -17,6 +17,8 @@ PROGRAM _CYCLIC
 	axisHandler.Enable := TRUE;
 	io.pusher.aoActualPosition := 100*LREAL_TO_REAL(axisHandler.Position);
 	axisHandler();
+	
+	// If mode 4 is selected run pusher logic
 	IF mode = 4 THEN 
 		CASE io.pusher.state OF
 		 ST_INIT:
@@ -67,23 +69,25 @@ PROGRAM _CYCLIC
 	    END_CASE		
     END_IF
 	
+	// Set mode for operation
 	mode := 4;
 
 	
-			IF spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
-				io.spawnCase := TRUE;
-				spawnTimer.IN := FALSE;
-			ELSE
-				io.spawnCase := FALSE;
-				spawnTimer.IN := TRUE;
-			END_IF
+	IF spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
+		io.spawnCase := TRUE;
+		spawnTimer.IN := FALSE;
+	ELSE
+		io.spawnCase := FALSE;
+		spawnTimer.IN := TRUE;
+	END_IF
 			
-			FOR i := 0 TO MAI_CONVEYORS DO 
-				
-				io.conveyor[i].singinTimer();
-				io.conveyor[i].singoutTimer();
-				io.conveyor[i].singinTimer.PT := T#6s;
-				io.conveyor[i].singoutTimer.PT := T#900ms;
+	FOR i := 0 TO MAI_CONVEYORS DO 
+		
+		// Zone timers
+		io.conveyor[i].singinTimer();
+		io.conveyor[i].singoutTimer();
+		io.conveyor[i].singinTimer.PT := T#6s;
+		io.conveyor[i].singoutTimer.PT := T#900ms;
 				
 		IF mode = 2 THEN
 			IF io.conveyor[0].diPhotoeyeEntrance THEN	
@@ -137,24 +141,24 @@ PROGRAM _CYCLIC
 		END_IF
 				
 				
-				 //handshakes for both directions
+		//handshakes for both directions
 				
 				
-				IF i = 0 THEN
-					io.conveyor[i].upstreamReadyToSend := io.conveyor[i].diPhotoeye1;
-				ELSE 
-					io.conveyor[i].upstreamReadyToSend := io.conveyor[i-1].readyToSend;
-				END_IF 
+		IF i = 0 THEN
+			io.conveyor[i].upstreamReadyToSend := io.conveyor[i].diPhotoeye1;
+		ELSE 
+			io.conveyor[i].upstreamReadyToSend := io.conveyor[i-1].readyToSend;
+		END_IF 
 					
-				IF i = MAI_CONVEYORS THEN
-					IF mode = 2 THEN 
-						io.conveyor[i].downstreamReadyToReceive := FALSE;
-					ELSE
-						io.conveyor[i].downstreamReadyToReceive := TRUE;
-					END_IF 	
-				ELSE 
-					io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
-				END_IF
+		IF i = MAI_CONVEYORS THEN
+			IF mode = 2 THEN 
+				io.conveyor[i].downstreamReadyToReceive := FALSE;
+			ELSE
+				io.conveyor[i].downstreamReadyToReceive := TRUE;
+			END_IF 	
+		ELSE 
+			io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
+		END_IF
 				
 				
 		CASE io.conveyor[i].state OF 		
@@ -217,12 +221,12 @@ PROGRAM _CYCLIC
 						END_IF 
 			    
 			
-			END_CASE 	
-			 //One shot logic
-			io.conveyor[i]._diPhotoeye1 := io.conveyor[i].diPhotoeye1;
-			io.conveyor[i]._diPhotoeye2 := io.conveyor[i].diPhotoeye2;
+		END_CASE 	
+		//One shot logic
+		io.conveyor[i]._diPhotoeye1 := io.conveyor[i].diPhotoeye1;
+		io.conveyor[i]._diPhotoeye2 := io.conveyor[i].diPhotoeye2;
 		
-		END_FOR
+	END_FOR
 		
 
 	
