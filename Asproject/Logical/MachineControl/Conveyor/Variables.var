@@ -4,6 +4,13 @@ VAR
 	spawnTimer : TON;
 	direction : BOOL;
 	axisParameters : MpAxisBasicParType;
+	CounterDone : BOOL;
+	startCounting : BOOL;
+	state : stateENUM2;
 	axisHandler : MpAxisBasic;
+	START : BOOL;
 	mode : INT;
+	STOP : BOOL;
+	RESET : BOOL;
+	ESTOP : BOOL;
 END_VAR

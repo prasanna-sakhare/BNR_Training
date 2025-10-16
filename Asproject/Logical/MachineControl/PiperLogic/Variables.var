@@ -1,5 +1,0 @@
-VAR
-	startCounting : BOOL;
-	state : stateENUM2;
-	counter : DINT;
-END_VAR

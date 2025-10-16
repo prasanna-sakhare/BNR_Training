@@ -5,20 +5,30 @@ PROGRAM _CYCLIC
 //	IF diPhotoeye = FALSE THEN
 //		doPusher := TRUE;
 //	END_IF	
-	
-
-	
-
-	//test :=  counter MOD 10;
-	//myCommand := (test = 0) AND (counter<200)
-	
 	PiperInterface;
+		
+	
+	CASE state OF 
+		ST_STOP:
+			counter := 0;
+			IF startCounting THEN
+				state := ST_RUNNING;
+			END_IF	
+		ST_RUNNING:
+			counter := counter +1;
+			IF counter> 500 THEN
+				CounterDone := TRUE;
+				state := ST_DONE;
+			END_IF	
+		ST_DONE:
+		 // Do nothing
+		     
+	END_CASE
 	
 	axisHandler.MpLink := ADR(gAxis_1);
 	axisHandler.Parameters :=  ADR(axisParameters);
 	axisHandler.Enable := TRUE;
 	io.pusher.aoActualPosition := 100*LREAL_TO_REAL(axisHandler.Position);
-	axisHandler();
 	
 	// If mode 4 is selected run pusher logic
 	IF mode = 4 THEN 
@@ -232,12 +242,9 @@ PROGRAM _CYCLIC
 	
 	// Multiple timers and axis function calls
 	axisHandler();	
-	io.pusher.extendedTimer();
-	io.pusher.extendedTimer.PT := T#3s;
-	spawnTimer();
-	spawnTimer.PT:= T#8s;
-	boxLengthTimer();
-	boxLengthTimer.PT := T#1S;
+	io.pusher.extendedTimer(PT := T#3s);
+	spawnTimer(PT:= T#8s);
+	boxLengthTimer(PT := T#1S);
 	
 	
 END_PROGRAM
