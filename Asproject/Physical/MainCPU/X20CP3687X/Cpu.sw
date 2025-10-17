@@ -6,6 +6,8 @@
   <TaskClass Name="Cyclic#3" />
   <TaskClass Name="Cyclic#4">
     <Task Name="Conveyor" Source="MachineControl.Conveyor.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="PiperLogic" Source="MachineControl.PiperLogic.prg" Memory="UserROM" Language="IEC" Debugging="true" />
+    <Task Name="Pusher" Source="MachineControl.Pusher.prg" Memory="UserROM" Language="IEC" Debugging="true" />
   </TaskClass>
   <TaskClass Name="Cyclic#5" />
   <TaskClass Name="Cyclic#6" />

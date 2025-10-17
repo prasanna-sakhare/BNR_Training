@@ -1,8 +1,4 @@
-
 VAR
-
-END_VAR
-
-VAR CONSTANT
-
+	mode : USINT;
+	gMachine : Piper_typ;
 END_VAR

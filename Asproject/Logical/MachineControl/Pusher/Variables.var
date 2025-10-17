@@ -1,0 +1,7 @@
+VAR
+	axisParameters : MpAxisBasicParType;
+	axisHandler : MpAxisBasic;
+	boxLengthTimer : TON;
+	machineStart : BOOL;
+	machineStop : BOOL;
+END_VAR

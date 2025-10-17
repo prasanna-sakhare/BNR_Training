@@ -5,75 +5,44 @@ PROGRAM _CYCLIC
 //	IF diPhotoeye = FALSE THEN
 //		doPusher := TRUE;
 //	END_IF	
+	PiperInterface;
+		
 	
-
+	CASE state OF 
 	
-
-	//test :=  counter MOD 10;
-	//myCommand := (test = 0) AND (counter<200)
+		ST_STOP:
+			counter := 0;
+			IF startCounting THEN
+				state := ST_RUNNING;
+			END_IF	
+		ST_RUNNING:
+			counter := counter +1;
+			IF counter> 500 THEN
+				CounterDone := TRUE;
+				state := ST_DONE;
+			END_IF	
+		ST_DONE:
+		 // Do nothing
+		     
+	END_CASE
 	
-	axisHandler.MpLink := ADR(gAxis_1);
-	axisHandler.Parameters :=  ADR(axisParameters);
-	axisHandler.Enable := TRUE;
-	io.pusher.aoActualPosition := 100*LREAL_TO_REAL(axisHandler.Position);
-	axisHandler();
-	
-	// If mode 4 is selected run pusher logic
-	IF mode = 4 THEN 
-		CASE io.pusher.state OF
-		 ST_INIT:
-			IF axisHandler.Active AND NOT axisHandler.PowerOn THEN
-				axisHandler.Power := TRUE;
-			ELSIF axisHandler.PowerOn AND NOT axisHandler.Home THEN
-				axisHandler.Home:= TRUE;
-			ELSIF axisHandler.IsHomed THEN
-				io.pusher.state := ST_WAIT;
-			END_IF
-	
-		ST_WAIT:
-			axisHandler.Home:= FALSE;
-			IF io.conveyor[2].diPhotoeye1 AND io.conveyor[2].doRunForward THEN
-				boxLengthTimer.IN := TRUE;
-				IF boxLengthTimer.ET > T#600ms THEN
-					io.pusher.state := ST_PUSH;
-				END_IF
-			ELSE 
-				boxLengthTimer.IN := FALSE;
-			END_IF
-			
-			
-			
-		ST_PUSH :
-			axisParameters.Position := 5.0;
-			axisParameters.Velocity := 5.0;
-			axisParameters.Acceleration := 25.0;
-			axisParameters.Deceleration := 25.0;
-			axisHandler.MoveAbsolute := TRUE;
-			io.pusher.extendedTimer.IN := TRUE;
-			boxLengthTimer.IN := FALSE;
-			
-			IF axisHandler.Position = axisParameters.Position OR io.pusher.extendedTimer.Q THEN
-				axisHandler.MoveAbsolute := FALSE;
-				io.pusher.extendedTimer.IN := FALSE;
-				io.pusher.state := ST_PULL;
-			END_IF
-	
-	   	ST_PULL:
-			
-				axisHandler.Home:= TRUE;	
-			IF axisHandler.IsHomed THEN
-				axisHandler.Home:= TRUE;
-				io.pusher.state := ST_WAIT;
-			END_IF
-			
-	    END_CASE		
-    END_IF
 	
 	// Set mode for operation
 	mode := 4;
-
 	
-	IF spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
+	IF machineStart THEN
+		io.conveyor[0].state := ST_IDLE;
+		io.conveyor[1].state := ST_IDLE;
+		io.conveyor[2].state := ST_IDLE;
+		io.conveyor[3].state := ST_IDLE;
+	ELSIF machineStop THEN
+		io.conveyor[0].state := ST_BOOTING;
+		io.conveyor[1].state := ST_BOOTING;
+		io.conveyor[2].state := ST_BOOTING;
+		io.conveyor[3].state := ST_BOOTING;
+	END_IF	
+	  
+	IF machineRunning AND (spawnTimer.Q AND NOT io.conveyor[0].diPhotoeyeEntrance) AND NOT (io.conveyor[0].state = ST_SINGIN) THEN
 		io.spawnCase := TRUE;
 		spawnTimer.IN := FALSE;
 	ELSE
@@ -87,7 +56,7 @@ PROGRAM _CYCLIC
 		io.conveyor[i].singinTimer();
 		io.conveyor[i].singoutTimer();
 		io.conveyor[i].singinTimer.PT := T#6s;
-		io.conveyor[i].singoutTimer.PT := T#900ms;
+		io.conveyor[i].singoutTimer.PT := T#1200ms;
 				
 		IF mode = 2 THEN
 			IF io.conveyor[0].diPhotoeyeEntrance THEN	
@@ -160,8 +129,14 @@ PROGRAM _CYCLIC
 			io.conveyor[i].downstreamReadyToReceive := io.conveyor[i+1].readyToReceive;
 		END_IF
 				
-				
+		
 		CASE io.conveyor[i].state OF 		
+			ST_BOOTING:
+				// DO NOTHING
+				io.conveyor[i].runMotor := FALSE;
+				io.conveyor[i].singoutTimer.IN := FALSE;
+				io.conveyor[i].singinTimer.IN := FALSE;
+				
 			ST_IDLE:
 				io.conveyor[i].runMotor := FALSE;
 				io.conveyor[i].singoutTimer.IN := FALSE;
@@ -230,14 +205,10 @@ PROGRAM _CYCLIC
 		
 
 	
-	// Multiple timers and axis function calls
-	axisHandler();	
-	io.pusher.extendedTimer();
-	io.pusher.extendedTimer.PT := T#3s;
-	spawnTimer();
-	spawnTimer.PT:= T#8s;
-	boxLengthTimer();
-	boxLengthTimer.PT := T#1S;
+	// Multiple timers and axis function calls	
+	
+	spawnTimer(PT:= T#8s);
+
 	
 	
 END_PROGRAM

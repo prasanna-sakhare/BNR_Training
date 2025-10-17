@@ -1,16 +1,9 @@
 
 TYPE
-	edge_Detection_Typ : 	STRUCT 
-		_diPhotoeyeExit : BOOL;
-		_diPhotoeyeEntrance : BOOL;
-		Occupied : BOOL;
-		Timer : TON;
-		singoutTimer : TON;
-		singinTimer : TON;
-		readyToSend : BOOL;
-		upstreamReadyToSend : BOOL;
-		downstreamReadyToReceive : BOOL;
-		DirectionForward : BOOL;
-		readyToReceive : BOOL;
-	END_STRUCT;
+	stateENUM2 : 
+		(
+		ST_RUNNING,
+		ST_DONE,
+		ST_STOP
+		);
 END_TYPE

@@ -2,7 +2,5 @@
 
 PROGRAM _INIT
 	(* Insert code here *)
-	counter := 0;	
-	state := ST_STOP;
-	
+
 END_PROGRAM

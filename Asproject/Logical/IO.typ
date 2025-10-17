@@ -5,6 +5,7 @@ TYPE
 		diPusherExtended : BOOL;
 		extendedTimer : TON;
 		state : PusherState;
+		reset : BOOL;
 		diPusherRetracted : BOOL;
 	END_STRUCT;
 	IO_typ : 	STRUCT 
@@ -14,6 +15,7 @@ TYPE
 	END_STRUCT;
 	StateEnum : 
 		(
+		ST_BOOTING,
 		ST_SINGOUT,
 		ST_SINGIN,
 		ST_IDLE,
@@ -21,6 +23,7 @@ TYPE
 		);
 	PusherState : 
 		(
+		ST_BOOT,
 		ST_INIT,
 		ST_WAIT,
 		ST_PUSH,
